@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Laundrynfo</string>
+    <string name="normal_text">I\'m a text box!</string>
+    <string name="button_text">Button Text</string>
 </resources>

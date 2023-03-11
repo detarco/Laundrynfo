@@ -8,6 +8,7 @@ interface RemoteRepository {
 
     suspend fun addClientsAndItems(customerModel: CustomerModel)
 
+
     suspend fun delCustomerAndItems(customerId: Int)
 
 }

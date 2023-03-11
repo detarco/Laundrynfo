@@ -6,6 +6,9 @@ class RemoteCustomerModel(
     var customer_id: Int = 0,
     var customer_name: String = "",
     var customer_surname: String = "",
+    var customer_phone: Int = 0,
+    var customer_email: String = "",
+    var customer_address: String = "",
     var customer_items: List<RemoteItemModel> = mutableListOf()
 )
 

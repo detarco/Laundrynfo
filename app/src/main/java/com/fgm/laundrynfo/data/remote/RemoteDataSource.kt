@@ -32,6 +32,9 @@ class RemoteDataSource : RemoteRepository {
                         remoteCustomer.customer_id,
                         remoteCustomer.customer_name,
                         remoteCustomer.customer_surname,
+                        remoteCustomer.customer_phone,
+                        remoteCustomer.customer_email,
+                        remoteCustomer.customer_address,
                         itemList
                     )
                 )
@@ -53,6 +56,9 @@ class RemoteDataSource : RemoteRepository {
             customerModel.id,
             customerModel.name,
             customerModel.surname,
+            customerModel.phone,
+            customerModel.email,
+            customerModel.address,
             remoteItemList
         )
 
