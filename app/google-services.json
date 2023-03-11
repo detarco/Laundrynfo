@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "236991741710",
+    "firebase_url": "https://tintoreria-fgm-default-rtdb.firebaseio.com",
+    "project_id": "tintoreria-fgm",
+    "storage_bucket": "tintoreria-fgm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236991741710:android:e5429b9be2b30f5362615f",
+        "android_client_info": {
+          "package_name": "com.fgm.laundrynfo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236991741710-dfdfukcslkg80ugdaakl177jagrbgq4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWCEMZePgTVjD3WUt91vZZM0EgaOgZ4_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236991741710-dfdfukcslkg80ugdaakl177jagrbgq4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
