@@ -3,16 +3,20 @@ package com.fgm.laundrynfo.presentation
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fgm.laundrynfo.R
+import com.fgm.laundrynfo.data.local.FileDataRepository
+import com.fgm.laundrynfo.data.local.FileRepository
+import com.fgm.laundrynfo.data.local.XmlDataRepository
+import com.fgm.laundrynfo.data.local.XmlRepository
 import com.fgm.laundrynfo.data.remote.RemoteDataSource
 import com.fgm.laundrynfo.data.remote.RemoteRepository
 import com.fgm.laundrynfo.domain.AdapterMoyai
 import com.fgm.laundrynfo.domain.CustomerModel
 import com.fgm.laundrynfo.domain.ItemModel
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         checkFile()
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerId)
-        var adapterMoyai = AdapterMoyai(this, crutch())
+        var adapterMoyai = AdapterMoyai(this, (getXmlSave()))
 
         //Config recycler view
         recyclerView.hasFixedSize()
@@ -34,45 +38,78 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.thebutton)
             .setOnClickListener {
-                adapterMoyai = AdapterMoyai(this, crutch())
+                addCustomer()
+                crutch()
+                adapterMoyai.update(getXmlSave())
             }
     }
 
+    private val xmlRepository: XmlRepository = XmlDataRepository(this, Gson())
     private val remoteRepository: RemoteRepository = RemoteDataSource()
 
     private fun checkFile() {
         /**checkCustomers()
-        addCustomer()*/
-        checkDeleteCustomer(2)
+        addCustomer()
+        checkDeleteCustomer(2)*/
     }
 
     private fun crutch(): List<CustomerModel> {
         val crutchList = mutableListOf<CustomerModel>()
-        checkCustomers().map { cm ->
-            crutchList.add(
-                CustomerModel(
-                    cm.id,
-                    cm.name,
-                    cm.surname,
-                    cm.phone,
-                    cm.address,
-                    cm.email,
-                    cm.items.map { im ->
-                        ItemModel(
-                            im.id,
-                            im.name
-                        )
-                    }
+        CoroutineScope(Dispatchers.IO).launch {
+            checkCustomers().map { cm ->
+                crutchList.add(
+                    CustomerModel(
+                        cm.id,
+                        cm.name,
+                        cm.surname,
+                        cm.phone,
+                        cm.address,
+                        cm.email,
+                        cm.items.map { im ->
+                            ItemModel(
+                                im.id,
+                                im.name
+                            )
+                        }
+                    )
                 )
-            )
-            Log.d("dev_crutch", "$cm")
+                xmlRepository.updClient(cm)
+                Log.d("dev_crutch", "$cm")
+            }
         }
         return crutchList
     }
 
-    private fun changeButton() {
-        val customerList = checkCustomers()
-        findViewById<TextView>(R.id.simple_quote_tv).text = "$customerList"
+    private fun getXmlSave(): List<CustomerModel> {
+        return xmlRepository.getClients()
+    }
+
+    private fun changeButton(): List<CustomerModel> {
+
+        var customerList = mutableListOf<CustomerModel>()
+        CoroutineScope(Dispatchers.IO).launch {
+            remoteRepository.getClientsAndItems().map { cM ->
+                customerList.add(
+                    CustomerModel(
+                        cM.id,
+                        cM.name,
+                        cM.surname,
+                        cM.phone,
+                        cM.email,
+                        cM.address,
+                        cM.items.map { iM ->
+                            ItemModel(
+                                iM.id,
+                                iM.name
+                            )
+                        }
+                    )
+                )
+            }
+        }
+
+        Log.d("dev_debug", "It worked?")
+        return customerList
     }
 
     private fun checkCustomers(): List<CustomerModel> {
@@ -80,6 +117,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             remoteRepository.getClientsAndItems().map {
                 clientList.add(it)
+                xmlRepository.updClient(it)
                 Log.d("dev_customer_model", "$it")
             }
         }
@@ -90,16 +128,16 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             remoteRepository.addClientsAndItems(
                 CustomerModel(
-                    6,
-                    "Demo 6",
-                    "Surdemo 6",
-                    345,
+                    7,
+                    "Demo 7",
+                    "Surdemo 7",
+                    658,
                     "something@something.com",
-                    "democasa456",
+                    "democasa658",
                     mutableListOf(
                         ItemModel(
-                            6,
-                            "Item 6"
+                            7,
+                            "Item 7"
                         )
                     )
                 )

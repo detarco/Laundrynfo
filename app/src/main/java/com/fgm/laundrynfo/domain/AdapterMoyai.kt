@@ -10,7 +10,7 @@ import com.fgm.laundrynfo.R
 
 class AdapterMoyai(
     val context: Context,
-    private val customerList: List<CustomerModel>
+    private var customerList: List<CustomerModel>
 ) : RecyclerView.Adapter<AdapterMoyai.ViewHolder>() {
 
     class ViewHolder(view: View, view2: View) : RecyclerView.ViewHolder(view) {
@@ -66,5 +66,12 @@ class AdapterMoyai(
     }
 
     override fun getItemCount() = customerList.size
+
+    fun update(customers: List<CustomerModel>){
+        customerList = mutableListOf<CustomerModel>()
+        customers.map {
+            (customerList as MutableList<CustomerModel>).add(it)
+        }
+    }
 
 }
