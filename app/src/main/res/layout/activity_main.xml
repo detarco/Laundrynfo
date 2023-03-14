@@ -1,48 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/checkListId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="3"
+    android:orientation="vertical"
     tools:context=".presentation.MainActivity">
 
-    <Button
-        android:id="@+id/thebutton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_text"
-        android:layout_margin="20dp"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/simple_quote_tv"
+        <EditText
+            android:id="@+id/newIdNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/idHint"
+            android:textSize="15sp"
+            android:inputType="number"
+            android:autofillHints="String" />
+
+        <EditText
+            android:id="@+id/newCustomerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/newCustomerNameHint"
+            android:inputType="textPersonName"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/newCustomerSurname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/newCustomerSurnameHint"
+            android:inputType="text"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/newPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/newPhoneHint"
+            android:inputType="phone"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/newEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/newEmailHint"
+            android:inputType="textEmailAddress"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/newAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="@string/newAddressHint"
+            android:inputType="text"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/theButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="20dp"
+        android:layout_weight="1"
         android:padding="10dp"
-        android:text="@string/normal_text"
-        app:layout_constraintBottom_toTopOf="@+id/thebutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/button_text" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerId"
-        android:padding="10dp"
-        android:background="@color/teal_700"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thebutton">
+        android:layout_height="150dp"
+        android:layout_gravity="bottom|center"
+        android:layout_weight="1"
+        android:background="@color/teal_700"
+        android:padding="10dp" />
 
-    </androidx.recyclerview.widget.RecyclerView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

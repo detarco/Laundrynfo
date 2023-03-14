@@ -5,13 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fgm.laundrynfo.R
 
-class AdapterMoyai(
+
+class AdapterCustomerModel(
     val context: Context,
     private var customerList: List<CustomerModel>
-) : RecyclerView.Adapter<AdapterMoyai.ViewHolder>() {
+) : RecyclerView.Adapter<AdapterCustomerModel.ViewHolder>() {
 
     class ViewHolder(view: View, view2: View) : RecyclerView.ViewHolder(view) {
         val customerId: TextView
@@ -62,7 +64,6 @@ class AdapterMoyai(
         holder.itemName.text = customerList[position].items.map {
             it.name
         }.toString()
-
     }
 
     override fun getItemCount() = customerList.size

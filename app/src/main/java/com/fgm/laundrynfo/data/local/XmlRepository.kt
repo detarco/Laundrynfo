@@ -6,18 +6,18 @@ import com.fgm.laundrynfo.domain.CustomerModel
 interface XmlRepository {
 
     //Guardar un listado de clientes (al menos 10 clientes).
-    fun saveClients(customerList: List<CustomerModel>)
+    fun saveCustomers(customerList: List<CustomerModel>)
 
     //Recuperar un listado de clientes.
-    fun getClients(): List<CustomerModel>
+    fun getCustomers(): List<CustomerModel>
 
     //Recuperar un cliente en concreto.
-    fun getClient(customerID: Int): CustomerModel
+    fun getCustomer(customerID: Int): CustomerModel
 
     //Eliminar un cliente en concreto.
-    fun delClient(customerID: Int)
+    fun delCustomer(customerID: Int)
 
     //Modificar los datos de un cliente (nombre, apellidos, email o teléfono)
-    fun updClient(customerModel: CustomerModel)
+    fun updCustomer(customerModel: CustomerModel)
 
 }

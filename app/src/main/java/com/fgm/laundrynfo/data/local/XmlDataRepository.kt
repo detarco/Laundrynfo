@@ -20,7 +20,7 @@ class XmlDataRepository(
         )
     }
 
-    override fun saveClients(customerList: List<CustomerModel>) {
+    override fun saveCustomers(customerList: List<CustomerModel>) {
         val edit = sharedPrefs.edit()
         customerList.map {
             edit.putString(
@@ -30,25 +30,25 @@ class XmlDataRepository(
         }
     }
 
-    override fun getClients(): List<CustomerModel> {
+    override fun getCustomers(): List<CustomerModel> {
         return sharedPrefs.all.values.map {
             gson.fromJson((it as String), CustomerModel::class.java)
         }
     }
 
-    override fun getClient(customerID: Int): CustomerModel {
+    override fun getCustomer(customerID: Int): CustomerModel {
         return gson.fromJson(
             sharedPrefs.getString(customerID.toString(), "{}"), CustomerModel::class.java
         )
     }
 
-    override fun delClient(customerID: Int) {
+    override fun delCustomer(customerID: Int) {
         val edit = sharedPrefs.edit()
         edit.remove(customerID.toString())
         edit.apply()
     }
 
-    override fun updClient(customerModel: CustomerModel) {
+    override fun updCustomer(customerModel: CustomerModel) {
         sharedPrefs.edit()
             .putString(customerModel.id.toString(), gson.toJson(customerModel, CustomerModel::class.java))
             .apply()

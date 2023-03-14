@@ -7,13 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fgm.laundrynfo.R
-import com.fgm.laundrynfo.data.local.FileDataRepository
-import com.fgm.laundrynfo.data.local.FileRepository
 import com.fgm.laundrynfo.data.local.XmlDataRepository
 import com.fgm.laundrynfo.data.local.XmlRepository
 import com.fgm.laundrynfo.data.remote.RemoteDataSource
 import com.fgm.laundrynfo.data.remote.RemoteRepository
-import com.fgm.laundrynfo.domain.AdapterMoyai
+import com.fgm.laundrynfo.domain.AdapterCustomerModel
+import com.fgm.laundrynfo.domain.AdapterItemModel
 import com.fgm.laundrynfo.domain.CustomerModel
 import com.fgm.laundrynfo.domain.ItemModel
 import com.google.gson.Gson
@@ -29,18 +28,19 @@ class MainActivity : AppCompatActivity() {
         checkFile()
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerId)
-        var adapterMoyai = AdapterMoyai(this, (getXmlSave()))
+        val adapterCustomerModel = AdapterCustomerModel(this, (getXmlSave()))
+        val adapterItemModel = AdapterItemModel(this, getXmlItemsSave())
 
         //Config recycler view
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapterMoyai
+        recyclerView.adapter = adapterCustomerModel
 
-        findViewById<Button>(R.id.thebutton)
+        findViewById<Button>(R.id.theButton)
             .setOnClickListener {
                 addCustomer()
                 crutch()
-                adapterMoyai.update(getXmlSave())
+                adapterCustomerModel.update(getXmlSave())
             }
     }
 
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     )
                 )
-                xmlRepository.updClient(cm)
+                xmlRepository.updCustomer(cm)
                 Log.d("dev_crutch", "$cm")
             }
         }
@@ -81,7 +81,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getXmlSave(): List<CustomerModel> {
-        return xmlRepository.getClients()
+        return xmlRepository.getCustomers()
+    }
+
+    private fun getXmlItemsSave(): List<List<ItemModel>> {
+        return xmlRepository.getCustomers().map { it.items }
     }
 
     private fun changeButton(): List<CustomerModel> {
@@ -117,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             remoteRepository.getClientsAndItems().map {
                 clientList.add(it)
-                xmlRepository.updClient(it)
+                xmlRepository.updCustomer(it)
                 Log.d("dev_customer_model", "$it")
             }
         }
