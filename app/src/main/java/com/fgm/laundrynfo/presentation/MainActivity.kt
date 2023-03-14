@@ -18,79 +18,59 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkFile()
 
-        val recyclerView : RecyclerView = findViewById(R.id.recyclerId)
-        val adapterMoyai : AdapterMoyai = AdapterMoyai()
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerId)
+        var adapterMoyai = AdapterMoyai(this, crutch())
 
-        //Config adapter
-        //adapterMoyai.customerList
-        adapterMoyai.recyclerViewAdapter(
-            buildDemo()
-            ,this)
         //Config recycler view
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapterMoyai
 
-
         findViewById<Button>(R.id.thebutton)
-            .setOnClickListener{
-                val customerList = checkCustomers().map {
-                    findViewById<TextView>(R.id.simple_quote_tv).text = "Hello"
-                }
+            .setOnClickListener {
+                adapterMoyai = AdapterMoyai(this, crutch())
             }
     }
 
     private val remoteRepository: RemoteRepository = RemoteDataSource()
 
     private fun checkFile() {
-        checkCustomers()
-        addCustomer()
+        /**checkCustomers()
+        addCustomer()*/
         checkDeleteCustomer(2)
     }
 
-    private fun buildDemo():List<CustomerModel>{
-        val customerList = mutableListOf<CustomerModel>()
-        customerList.add(
-            CustomerModel(
-                1,
-                "name1",
-                "surname1",
-                123,
-                "email1",
-                "address1",
-                mutableListOf<ItemModel>(
-                    ItemModel(
-                        1,
-                        "item1"
-                    )
+    private fun crutch(): List<CustomerModel> {
+        val crutchList = mutableListOf<CustomerModel>()
+        checkCustomers().map { cm ->
+            crutchList.add(
+                CustomerModel(
+                    cm.id,
+                    cm.name,
+                    cm.surname,
+                    cm.phone,
+                    cm.address,
+                    cm.email,
+                    cm.items.map { im ->
+                        ItemModel(
+                            im.id,
+                            im.name
+                        )
+                    }
                 )
             )
-        )
-        customerList.add(
-            CustomerModel(
-                2,
-                "name2",
-                "surname2",
-                345,
-                "email2",
-                "address2",
-                mutableListOf<ItemModel>(
-                    ItemModel(
-                        2,
-                        "item2"
-                    )
-                )
-            )
-        )
-        return customerList
+            Log.d("dev_crutch", "$cm")
+        }
+        return crutchList
     }
 
-    private fun changeButton(){
+    private fun changeButton() {
         val customerList = checkCustomers()
         findViewById<TextView>(R.id.simple_quote_tv).text = "$customerList"
     }
@@ -110,32 +90,33 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             remoteRepository.addClientsAndItems(
                 CustomerModel(
-                    5,
-                    "Demo 5",
-                    "Surdemo 5",
-                    124,
+                    6,
+                    "Demo 6",
+                    "Surdemo 6",
+                    345,
                     "something@something.com",
-                    "democasa123",
+                    "democasa456",
                     mutableListOf(
                         ItemModel(
-                            5,
-                            "Item 5"
+                            6,
+                            "Item 6"
                         )
                     )
                 )
             )
         }
     }
-/**
+
+    /**
     private fun checkFindCustomer(customerId: Int) {
 
-        CoroutineScope(Dispatchers.IO).launch {
-            remoteRepository.getClientsAndItems().first { it.id == customerId }
-
-        }
+    CoroutineScope(Dispatchers.IO).launch {
+    remoteRepository.getClientsAndItems().first { it.id == customerId }
 
     }
-*/
+
+    }
+     */
     private fun checkDeleteCustomer(customerId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             remoteRepository.delCustomerAndItems(customerId)
