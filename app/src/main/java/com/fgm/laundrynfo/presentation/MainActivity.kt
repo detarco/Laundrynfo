@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val intNewCustomerId by lazy {
-        etCustomerNewId.inputType
+        etCustomerNewId.text.toString()
     }
     private val strNetCustomerName by lazy {
         etNewCustomerName.text.toString()
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         etNewCustomerSurname.text.toString()
     }
     private val intNewCustomerPhone by lazy {
-        etNewCustomerPhone.inputType
+        etNewCustomerPhone.text.toString()
     }
     private val strNewCustomerEmail by lazy {
         etNewCustomerEmail.text.toString()
@@ -91,33 +91,6 @@ class MainActivity : AppCompatActivity() {
         /**checkCustomers()
         addCustomer()
         checkDeleteCustomer(2)*/
-    }
-
-    private fun crutch(): List<CustomerModel> {
-        val crutchList = mutableListOf<CustomerModel>()
-        CoroutineScope(Dispatchers.IO).launch {
-            checkCustomers().map { cm ->
-                crutchList.add(
-                    CustomerModel(
-                        cm.id,
-                        cm.name,
-                        cm.surname,
-                        cm.phone,
-                        cm.email,
-                        cm.address,
-                        cm.items.map { im ->
-                            ItemModel(
-                                im.id,
-                                im.name
-                            )
-                        }
-                    )
-                )
-                xmlRepository.updCustomer(cm)
-                Log.d("dev_crutch", "$cm")
-            }
-        }
-        return crutchList
     }
 
     private fun getXmlSave(): List<CustomerModel> {
@@ -170,25 +143,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun addCustomer() {
 
-
-        if (TextUtils.isEmpty(intNewCustomerId.toString())) {
+        if (etCustomerNewId.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Needs a new Id", Toast.LENGTH_SHORT).show()
-        } else if (TextUtils.isEmpty(strNetCustomerName)) {
+        } else if (etNewCustomerName.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Needs a new Name", Toast.LENGTH_SHORT).show()
-        } else if (TextUtils.isEmpty(strNewCustomerSurname)) {
+        } else if (etNewCustomerSurname.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Needs a new Surname", Toast.LENGTH_SHORT).show()
-        } else if (TextUtils.isEmpty(intNewCustomerPhone.toString())) {
+        } else if (etNewCustomerPhone.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Needs a new Phone", Toast.LENGTH_SHORT).show()
-        } else if (TextUtils.isEmpty(strNewCustomerEmail)) {
+        } else if (etNewCustomerEmail.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Needs a new Email", Toast.LENGTH_SHORT).show()
-        } else if (TextUtils.isEmpty(strNewCustomerAddress)) {
+        } else if (etNewCustomerAddress.text.toString().trim().isEmpty()) {
             Toast.makeText(this, "Needs a new Address", Toast.LENGTH_SHORT).show()
         } else {
             val newCustomerModel = CustomerModel(
-                intNewCustomerId,
+                intNewCustomerId.toInt(),
                 strNetCustomerName,
                 strNewCustomerSurname,
-                intNewCustomerPhone,
+                intNewCustomerPhone.toInt(),
                 strNewCustomerEmail,
                 strNewCustomerAddress,
                 mutableListOf()
@@ -196,6 +168,11 @@ class MainActivity : AppCompatActivity() {
             xmlRepository.updCustomer(
                 newCustomerModel
             )
+            Toast.makeText(
+                this,
+                "New Customer with id $newCustomerModel.id added",
+                Toast.LENGTH_LONG
+            ).show()
 
             CoroutineScope(Dispatchers.IO).launch {
                 remoteRepository.addClientsAndItems(

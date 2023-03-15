@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Laundrynfo</string>
     <string name="normal_text">I\'m a text box!</string>
-    <string name="button_text">Button Text</string>
+    <string name="button_text">Press to Add new Customer!</string>
 
-    <string name="idHint">New ID Number</string>
-    <string name="newCustomerNameHint">New Customer Name!</string>
-    <string name="newCustomerSurnameHint">New Customer Surname!</string>
-    <string name="newPhoneHint">New Phone!</string>
-    <string name="newEmailHint">New Email!</string>
-    <string name="newAddressHint">New Address!</string>
+    <string name="idHint">Insert new ID number!</string>
+    <string name="newCustomerNameHint">Insert new customer name!</string>
+    <string name="newCustomerSurnameHint">Insert new customer surname!</string>
+    <string name="newPhoneHint">Insert new customer phone!</string>
+    <string name="newEmailHint">Insert new customer email!</string>
+    <string name="newAddressHint">Insert new customer address!</string>
 </resources>
