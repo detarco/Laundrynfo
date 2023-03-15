@@ -1,8 +1,11 @@
 package com.fgm.laundrynfo.presentation
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,13 +43,49 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.theButton)
             .setOnClickListener {
                 addCustomer()
-                crutch()
-                adapterCustomerModel.update(getXmlSave())
             }
     }
 
     private val xmlRepository: XmlRepository = XmlDataRepository(this, Gson())
     private val remoteRepository: RemoteRepository = RemoteDataSource()
+
+    private val etCustomerNewId by lazy {
+        findViewById<EditText>(R.id.newIdNumber)
+    }
+    private val etNewCustomerName by lazy {
+        findViewById<EditText>(R.id.newCustomerName)
+    }
+    private val etNewCustomerSurname by lazy {
+        findViewById<EditText>(R.id.newCustomerSurname)
+    }
+    private val etNewCustomerPhone by lazy {
+        findViewById<EditText>(R.id.newPhone)
+    }
+    private val etNewCustomerEmail by lazy {
+        findViewById<EditText>(R.id.newEmail)
+    }
+    private val etNewCustomerAddress by lazy {
+        findViewById<EditText>(R.id.newAddress)
+    }
+
+    private val intNewCustomerId by lazy {
+        etCustomerNewId.inputType
+    }
+    private val strNetCustomerName by lazy {
+        etNewCustomerName.text.toString()
+    }
+    private val strNewCustomerSurname by lazy {
+        etNewCustomerSurname.text.toString()
+    }
+    private val intNewCustomerPhone by lazy {
+        etNewCustomerPhone.inputType
+    }
+    private val strNewCustomerEmail by lazy {
+        etNewCustomerEmail.text.toString()
+    }
+    private val strNewCustomerAddress by lazy {
+        etNewCustomerAddress.text.toString()
+    }
 
     private fun checkFile() {
         /**checkCustomers()
@@ -63,8 +103,8 @@ class MainActivity : AppCompatActivity() {
                         cm.name,
                         cm.surname,
                         cm.phone,
-                        cm.address,
                         cm.email,
+                        cm.address,
                         cm.items.map { im ->
                             ItemModel(
                                 im.id,
@@ -129,23 +169,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addCustomer() {
-        CoroutineScope(Dispatchers.IO).launch {
-            remoteRepository.addClientsAndItems(
-                CustomerModel(
-                    7,
-                    "Demo 7",
-                    "Surdemo 7",
-                    658,
-                    "something@something.com",
-                    "democasa658",
-                    mutableListOf(
-                        ItemModel(
-                            7,
-                            "Item 7"
-                        )
-                    )
-                )
+
+
+        if (TextUtils.isEmpty(intNewCustomerId.toString())) {
+            Toast.makeText(this, "Needs a new Id", Toast.LENGTH_SHORT).show()
+        } else if (TextUtils.isEmpty(strNetCustomerName)) {
+            Toast.makeText(this, "Needs a new Name", Toast.LENGTH_SHORT).show()
+        } else if (TextUtils.isEmpty(strNewCustomerSurname)) {
+            Toast.makeText(this, "Needs a new Surname", Toast.LENGTH_SHORT).show()
+        } else if (TextUtils.isEmpty(intNewCustomerPhone.toString())) {
+            Toast.makeText(this, "Needs a new Phone", Toast.LENGTH_SHORT).show()
+        } else if (TextUtils.isEmpty(strNewCustomerEmail)) {
+            Toast.makeText(this, "Needs a new Email", Toast.LENGTH_SHORT).show()
+        } else if (TextUtils.isEmpty(strNewCustomerAddress)) {
+            Toast.makeText(this, "Needs a new Address", Toast.LENGTH_SHORT).show()
+        } else {
+            val newCustomerModel = CustomerModel(
+                intNewCustomerId,
+                strNetCustomerName,
+                strNewCustomerSurname,
+                intNewCustomerPhone,
+                strNewCustomerEmail,
+                strNewCustomerAddress,
+                mutableListOf()
             )
+            xmlRepository.updCustomer(
+                newCustomerModel
+            )
+
+            CoroutineScope(Dispatchers.IO).launch {
+                remoteRepository.addClientsAndItems(
+                    newCustomerModel
+                )
+            }
         }
     }
 
