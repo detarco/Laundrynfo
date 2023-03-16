@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        checkFile()
+        checkCustomers()
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerId)
         val adapterCustomerModel = AdapterCustomerModel(this, (getXmlSave()))
@@ -87,12 +87,6 @@ class MainActivity : AppCompatActivity() {
         etNewCustomerAddress.text.toString()
     }
 
-    private fun checkFile() {
-        /**checkCustomers()
-        addCustomer()
-        checkDeleteCustomer(2)*/
-    }
-
     private fun getXmlSave(): List<CustomerModel> {
         return xmlRepository.getCustomers()
     }
@@ -103,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeButton(): List<CustomerModel> {
 
-        var customerList = mutableListOf<CustomerModel>()
+        val customerList = mutableListOf<CustomerModel>()
         CoroutineScope(Dispatchers.IO).launch {
             remoteRepository.getClientsAndItems().map { cM ->
                 customerList.add(
@@ -198,33 +192,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-    private fun checkUpdateCustomer(customerId: Int) {
-    fileRepository.updClient(
-    ClientModel(
-    customerId,
-    "demo_name",
-    "demo_surname",
-    123123123,
-    "demo@gmail.com",
-    "demoaddress1"
-    )
-    )
-    val clientList = fileRepository.getClients()
-    Log.d("dev_updated", "$clientList")
-
-    xmlRepository.updClient(
-    ClientModel(
-    customerId,
-    "name",
-    "surname",
-    123123123,
-    "demo@gmail.com",
-    "address2"
-    )
-    )
-    val clientListXml = xmlRepository.getClients()
-    Log.d("dev_xml_updated", "$clientListXml")
-    }
-     **/
 }
