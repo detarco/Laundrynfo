@@ -2,7 +2,6 @@ package com.fgm.laundrynfo.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.fgm.laundrynfo.domain.ClientModel
 import com.fgm.laundrynfo.domain.CustomerModel
 
 import com.google.gson.Gson
